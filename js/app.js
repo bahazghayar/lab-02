@@ -1,6 +1,6 @@
 'use strict';
 
-$.ajax('../data/page-1.json')
+$.ajax('./data/page-1.json')
 .then(data => {
         data.forEach((item) => {
 
