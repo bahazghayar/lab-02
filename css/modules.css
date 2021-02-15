@@ -1,0 +1,27 @@
+
+h1 {
+    font-size: 40px;
+    font-family: 'Acme', sans-serif;
+    margin: 20px ;
+}
+
+select:hover {
+    background-color: gray;
+}
+
+
+#photo-template {
+    display: none;
+}
+
+
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+h2 , p {
+    font-family: 'Acme', sans-serif;
+    font-size: 20px;
+}

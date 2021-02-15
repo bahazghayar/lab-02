@@ -1,16 +1,5 @@
 
-
-
-img {
-    width: 200px;
-    height: 200px;
-}
-
-#photo-template {
-    display: none;
-}
-
-div {
-    display: inline-block;
-    width: 25%;
-}
+@import 'reset.css' ;
+@import 'base.css' ; 
+@import 'layouts.css' ;
+@import 'modules.css' ;
