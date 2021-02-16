@@ -1,73 +1,127 @@
 'use strict';
 
-$.ajax('./data/page-1.json')
-.then(data => {
-        data.forEach((item) => {
-
-            let image = new Images(item);   
-            
-            image.render();
-
-            if (!allKeywords.includes(item.keyword)){
-                allKeywords.push(item.keyword) ;
+$.ajax('data/page-1.json')
+    .then(data => {
+        data.forEach(element => {
+            let newImage = new TemplateImages(element);
+           let render=newImage.render();
+           $('main').append(render);
+            if (!allKeyword.includes(element.keyword)) {
+                allKeyword.push(element.keyword);
             }
-             
+     
         });
         select();
-        imageClone.removeAttr('id');
 
-       
 });
 
-let allKeywords = [] ; 
-let allImages = [] ; 
+let allImg2=[];
+$.ajax('data/page-2.json')
+    .then(data => {
+        data.forEach(element => {
+        allImg2.push(element)
+        if (!allKeyword2.includes(element.keyword)) {
+            allKeyword2.push(element.keyword);
+        }
+        });
+      
+});
 
-function Images(value) {
+
+
+// let allKeyword2 = [];
+let allImg = [];
+let allKeyword = [];
+function TemplateImages(value) {
     this.title = value.title;
     this.image_url = value.image_url;
     this.description = value.description;
     this.keyword = value.keyword;
     this.horns = value.horns;
-
-    allImages.push(this) ;
+    allImg.push(this);
 }
 
-Images.prototype.render = function () {
-
-    let imageClone = $('#photo-template').clone();
-    imageClone.removeAttr('id') ; 
-    imageClone.find('h2').text(this.title);
-    imageClone.find('img').attr('src', this.image_url);
-    imageClone.find('p').text(this.description);
-
-    $('main').append(imageClone);
-
-} 
-
+TemplateImages.prototype.render = function () {
+    let template = $('#imagesTem').html();
+    let newObj = Mustache.render(template, this);
+    return newObj;
+};
 
 function select() {
-    allKeywords.forEach(k =>{
+    allKeyword.forEach(each => {
 
-        $('select').append(`<option>${k}</option>`) ; 
-    }) 
-      
+        $('#select').append(`<option> ${each}</option>`);
+        
+    });
 }
 
-$('select').on('change',function(){
-    
-    $('main').html('<div id="photo-template"> <h2></h2> <img src="" alt=""> <p></p></div>') ;
-
-  let choice =  $('select').val() ; 
-   
-  allImages.forEach(object =>{
-      
-    if (object.keyword === choice){
+// function select2() {
+//     allKeyword2.forEach(each => {
        
-        let newObject = new Images(object) ; 
-        newObject.render() ; 
-          
-    }
+//         $('#select').append(`<option> ${each}</option>`);
+       
+//     });
+// }
 
+function sort(){
+    $('#sort').append('<option> title </option>');
+    $('#sort').append('<option> horns </option>');
+   
+}
+sort();
 
-  })
+$('#select').on('change', function () {
+    $('main').html('');
+    allImg.forEach(item => {
+        if (item.keyword == $('#select').val()) {
+
+            let newImage = new TemplateImages(item);
+            let render=newImage.render();
+            if (allImg.includes(newImage)) {
+                allImg.pop(newImage);
+            }
+            
+            $('main').append(render);
+
+        }
+    })
 })
+
+
+
+$('#page1').on('click',function(){
+    
+    $('main').html('');
+    allImg.forEach(item => {
+            let newImage = new TemplateImages(item);
+            let render=newImage.render();
+            $('main').append(render);
+            if (allImg.includes(newImage)) {
+                allImg.pop(newImage);
+            }
+        
+    })
+})
+
+$('#page2').on('click',function(){
+    
+    $('main').html('');
+    allImg2.forEach(item => {
+            let newImage = new TemplateImages(item);
+            let render=newImage.render();
+            $('main').append(render);
+            if(allImg.includes(newImage)){
+                allImg.pop(newImage);
+            }
+
+       select2();
+    })
+})
+
+$('#sort').on('change',function () {
+        if ($('#sort').val()=='horns') {
+            alert('hi')
+        }else if ($('#sort').val()=='title'){
+            alert('bye')
+        }
+    })
